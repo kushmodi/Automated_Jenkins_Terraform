@@ -55,7 +55,7 @@ resource "local_file" "node-file" {
   <description>Linux Slave</description>
   <remoteFS>/home/jenkins</remoteFS>
   <numExecutors>1</numExecutors>
-  <mode>NORMAL</mode>
+  <mode>EXCLUSIVE</mode>
   <retentionStrategy class="hudson.slaves.RetentionStrategy\$Always"/>
   <launcher class="hudson.plugins.sshslaves.SSHLauncher" plugin="ssh-slaves@1.5">
     <host>${aws_instance.ec2.public_ip}</host>
@@ -65,7 +65,7 @@ resource "local_file" "node-file" {
           <requireInitialManualTrust>false</requireInitialManualTrust>
         </sshHostKeyVerificationStrategy>
   </launcher>
-  <label>${aws_instance.ec2.tags.Name}</label>
+  <label>jenkins-slave</label>
   <nodeProperties/>
   <userId>jenkins</userId>
 </slave>
