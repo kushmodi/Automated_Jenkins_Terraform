@@ -131,6 +131,12 @@ resource "null_resource" "slave-config" {
     EOT
   }
 }
+resource "null_resource" "destroy-slave" {
+  provisioner "local-exec" {
+    when = destroy
+    command = "java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${var.username}:${var.password} delete-node ${aws_instance.ec2.tags.Name}"
+  }
+}
 
 
 
