@@ -122,11 +122,11 @@ resource "null_resource" "slave-config" {
   depends_on = [local_file.node-file,null_resource.change-permission]
   provisioner "local-exec" {
     command = <<EOT
-     sudo chown jenkins:jenkins ~/POC/node.xml
+     sudo chown jenkins:jenkins /var/lib/jenkins/node.xml
      sudo wget -O /var/lib/jenkins/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar
      sudo chown jenkins:jenkins /var/lib/jenkins/jenkins-cli.jar
      java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${var.username}:${var.password} list-plugins 2>/dev/null | wc -l
-     sudo cat ~/POC/node.xml | java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${var.username}:${var.password} create-node ${aws_instance.ec2.tags.Name}
+     sudo cat /var/lib/jenkins/node.xml | java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${var.username}:${var.password} create-node ${aws_instance.ec2.tags.Name}
     EOT
   }
 }
