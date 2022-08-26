@@ -48,7 +48,7 @@ resource "aws_security_group" "allow_ssh" {
 
 resource "local_file" "node-file" {
   depends_on = [aws_instance.ec2]
-  filename = "node.xml"
+  filename = "/var/lib/jenkins/node.xml"
   content = <<-EOT
 <slave>
   <name>${aws_instance.ec2.tags.Name}</name>
@@ -122,7 +122,7 @@ resource "null_resource" "slave-config" {
   depends_on = [local_file.node-file,null_resource.change-permission]
   provisioner "local-exec" {
     command = <<EOT
-     sudo mv ~/POC/node.xml /var/lib/jenkins
+#      sudo mv ~/POC/node.xml /var/lib/jenkins
      sudo chown jenkins:jenkins /var/lib/jenkins/node.xml
      sudo wget -O /var/lib/jenkins/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar
      sudo chown jenkins:jenkins /var/lib/jenkins/jenkins-cli.jar
