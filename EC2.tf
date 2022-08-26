@@ -107,7 +107,7 @@ resource "aws_instance" "ec2" {
 resource "null_resource" "change-permission" {
   provisioner "remote-exec" {
     inline = [
-      "sudo chmod -R 600 /home/jenkins/.ssh",
+      "sudo chmod -R 700 /home/jenkins/.ssh",
     ]
     connection {
       type        = "ssh"
