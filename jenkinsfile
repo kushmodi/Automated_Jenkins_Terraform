@@ -1,0 +1,29 @@
+node('master'){
+    stage ('git checkout') {
+        git branch: 'main', credentialId: 'github-connect', url: 'https://github.com/kushmodi/POC.git'
+    }
+    withAWS(credentials: 'POC', region: 'us-west-2') {
+    withCredentials([usernamePassword(credentialsId: 'jenkins-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+    stage ('create build agent') {    
+        sh 'terraform init'
+        sh 'terraform apply --auto-approve -var "username=${USERNAME}" -var "password=${PASSWORD}"'
+    }    
+    }
+    }
+    }
+node ('jenkins-slave'){
+    stage ('run build on newly created agent'){  
+        sh 'hostname'
+        sh 'hostname -I'
+    }
+}
+node ('master'){
+    stage ('destroy newly built agent') { 
+        withAWS(credentials: 'POC', region: 'us-west-2') {
+        withCredentials([usernamePassword(credentialsId: 'jenkins-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        sh 'terraform destroy --auto-approve -var "username=${USERNAME}" -var "password=${PASSWORD}"'
+        sh 'java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${USERNAME}:${PASSWORD} delete-node jenkins-slave' 
+}        
+}       
+}
+}
