@@ -1,10 +1,10 @@
 resource "aws_key_pair" "jenkins-slave" {
-  key_name   = "jenkins-slave"
+  key_name   = var.name
   public_key = file("/var/lib/jenkins/.ssh/id_rsa.pub")
 }
 
 resource "aws_security_group" "allow_ssh" {
-  name        = "allow_ssh"
+  name        = var.name
   description = "Allow SSH inbound traffic"
 
   ingress {
