@@ -15,15 +15,25 @@ node ('jenkins-slave'){
     stage ('run build on newly created agent'){  
         sh 'hostname'
         sh 'hostname -I'
+        sh 'sleep 480'
     }
 }
 node ('master'){
     stage ('destroy newly built agent') { 
         withAWS(credentials: 'POC', region: 'us-west-2') {
         withCredentials([usernamePassword(credentialsId: 'jenkins-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-        sh 'terraform destroy --auto-approve -var "username=${USERNAME}" -var "password=${PASSWORD}"'
-        sh 'java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${USERNAME}:${PASSWORD} delete-node jenkins-slave' 
-}        
-}       
+        script{
+        result = sh 'terraform destroy --auto-approve -var "username=${USERNAME}" -var "password=${PASSWORD}"'
+        if(${result} == 1)
+        {
+        sh 'java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${USERNAME}:${PASSWORD} delete-node jenkins-slave'
+        }
+        else {
+        sh "echo Errors in the destroy command"
+        }
+
+}
+}
+}
 }
 }

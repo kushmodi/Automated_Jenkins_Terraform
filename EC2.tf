@@ -1,3 +1,12 @@
+terraform {
+  backend "s3" {
+
+    bucket = "poc.tfstate"
+    key = "state-files/terraform.tfstate"
+    region = "us-west-2"
+    dynamodb_table = "terraform-state-lock"
+  }
+}
 
 resource "aws_key_pair" "jenkins-slave" {
   key_name   = "jenkins-slave"
@@ -51,7 +60,7 @@ resource "local_file" "node-file" {
   filename = "/var/lib/jenkins/node.xml"
   content = <<-EOT
 <slave>
-  <name>${aws_instance.ec2.tags.Name}</name>
+  <name>${aws_instance.ec2.id}</name>
   <description>Linux Slave</description>
   <remoteFS>/home/jenkins</remoteFS>
   <numExecutors>1</numExecutors>
@@ -79,9 +88,9 @@ resource "aws_instance" "ec2" {
   key_name                    = aws_key_pair.jenkins-slave.key_name
   security_groups             = [aws_security_group.allow_ssh.name]
 
-  tags = {
-    Name = "jenkins-slave"
-  }
+#  tags = {
+#    Name = "jenkins-slave"
+#  }
 
   connection {
     type        = "ssh"
@@ -126,7 +135,7 @@ resource "null_resource" "slave-config" {
      sudo wget -O /var/lib/jenkins/jenkins-cli.jar http://localhost:8080/jnlpJars/jenkins-cli.jar
      sudo chown jenkins:jenkins /var/lib/jenkins/jenkins-cli.jar
      java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${var.username}:${var.password} list-plugins 2>/dev/null | wc -l
-     sudo cat /var/lib/jenkins/node.xml | java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${var.username}:${var.password} create-node ${aws_instance.ec2.tags.Name}
+     sudo cat /var/lib/jenkins/node.xml | java -jar /var/lib/jenkins/jenkins-cli.jar -s http://localhost:8080 -auth ${var.username}:${var.password} create-node ${aws_instance.ec2.id}
     EOT
   }
 }
