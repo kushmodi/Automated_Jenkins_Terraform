@@ -23,7 +23,7 @@ if(createdNode == null) {
        stage ('run build on newly created agent'){
              sh '''hostname
                 hostname -I
-                sleep 480'''
+                sleep 3600'''
              }
        }
    }
