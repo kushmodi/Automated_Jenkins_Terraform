@@ -6,11 +6,13 @@ node('master'){
             withAWS(credentials: 'POC', region: 'us-west-2') {
             withCredentials([usernamePassword(credentialsId: 'jenkins-credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             stage ('create build agent') {
-             def commands = ['cd key_pair_sg_build','terraform init','terraform apply -auto-approve', 'cd ..', 'terraform init', 'terraform apply -auto-approve -state=terraform-state-${BUILD_NUMBER} -var name=jenkins_slave-${BUILD_NUMBER} -var "username=${USERNAME}" -var "password=${PASSWORD}"']
-             commands.each {
-             def res = sh(script: it, returnStatus: true)
-             println("$it results $res")
-            }
+             def res = sh '''cd key_pair_sg_build
+                              terraform init
+                              terraform apply -auto-approve
+                               cd ..
+                               terraform init
+                               terraform apply -auto-approve -state=terraform-state-${BUILD_NUMBER} -var name=jenkins_slave-${BUILD_NUMBER} -var "username=${USERNAME}" -var "password=${PASSWORD}"
+                               sleep 60'''
          }
        }
      }
