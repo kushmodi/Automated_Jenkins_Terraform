@@ -1,0 +1,175 @@
+{
+  "version": 4,
+  "terraform_version": "1.2.2",
+  "serial": 4,
+  "lineage": "685771a8-7e16-91d7-6a89-47a71f07271d",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "ec2",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "ami": "ami-0b68ffacaa25f6879",
+            "arn": "arn:aws:ec2:us-west-2:402175803843:instance/i-0b980f03cf34efed8",
+            "associate_public_ip_address": true,
+            "availability_zone": "us-west-2c",
+            "capacity_reservation_specification": [
+              {
+                "capacity_reservation_preference": "open",
+                "capacity_reservation_target": []
+              }
+            ],
+            "cpu_core_count": 1,
+            "cpu_threads_per_core": 1,
+            "credit_specification": [
+              {
+                "cpu_credits": "standard"
+              }
+            ],
+            "disable_api_stop": false,
+            "disable_api_termination": false,
+            "ebs_block_device": [],
+            "ebs_optimized": false,
+            "enclave_options": [
+              {
+                "enabled": false
+              }
+            ],
+            "ephemeral_block_device": [],
+            "get_password_data": false,
+            "hibernation": false,
+            "host_id": null,
+            "iam_instance_profile": "",
+            "id": "i-0b980f03cf34efed8",
+            "instance_initiated_shutdown_behavior": "stop",
+            "instance_state": "running",
+            "instance_type": "t2.micro",
+            "ipv6_address_count": 0,
+            "ipv6_addresses": [],
+            "key_name": "jenkins-slave",
+            "launch_template": [],
+            "maintenance_options": [
+              {
+                "auto_recovery": "default"
+              }
+            ],
+            "metadata_options": [
+              {
+                "http_endpoint": "enabled",
+                "http_put_response_hop_limit": 1,
+                "http_tokens": "optional",
+                "instance_metadata_tags": "disabled"
+              }
+            ],
+            "monitoring": false,
+            "network_interface": [],
+            "outpost_arn": "",
+            "password_data": "",
+            "placement_group": "",
+            "placement_partition_number": null,
+            "primary_network_interface_id": "eni-05f2acce56b477b19",
+            "private_dns": "ip-172-31-1-45.us-west-2.compute.internal",
+            "private_dns_name_options": [
+              {
+                "enable_resource_name_dns_a_record": false,
+                "enable_resource_name_dns_aaaa_record": false,
+                "hostname_type": "ip-name"
+              }
+            ],
+            "private_ip": "172.31.1.45",
+            "public_dns": "ec2-35-91-240-185.us-west-2.compute.amazonaws.com",
+            "public_ip": "35.91.240.185",
+            "root_block_device": [
+              {
+                "delete_on_termination": true,
+                "device_name": "/dev/sda1",
+                "encrypted": false,
+                "iops": 100,
+                "kms_key_id": "",
+                "tags": {},
+                "throughput": 0,
+                "volume_id": "vol-03e1fd35a4a820c11",
+                "volume_size": 10,
+                "volume_type": "gp2"
+              }
+            ],
+            "secondary_private_ips": [],
+            "security_groups": [
+              "allow-ssh"
+            ],
+            "source_dest_check": true,
+            "subnet_id": "subnet-004497efbe3d8cdd2",
+            "tags": {
+              "Name": "jenkins-slave1"
+            },
+            "tags_all": {
+              "Name": "jenkins-slave1"
+            },
+            "tenancy": "default",
+            "timeouts": null,
+            "user_data": null,
+            "user_data_base64": null,
+            "user_data_replace_on_change": false,
+            "volume_tags": null,
+            "vpc_security_group_ids": [
+              "sg-0a18a9a2a140b0b8a"
+            ]
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMCwidXBkYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "local_file",
+      "name": "node-file",
+      "provider": "provider[\"registry.terraform.io/hashicorp/local\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "content": "\u003cslave\u003e\n  \u003cname\u003ejenkins-slave1\u003c/name\u003e\n  \u003cdescription\u003eLinux Slave\u003c/description\u003e\n  \u003cremoteFS\u003e/home/jenkins\u003c/remoteFS\u003e\n  \u003cnumExecutors\u003e1\u003c/numExecutors\u003e\n  \u003cmode\u003eEXCLUSIVE\u003c/mode\u003e\n  \u003cretentionStrategy class=\"hudson.slaves.RetentionStrategy\\$Always\"/\u003e\n  \u003clauncher class=\"hudson.plugins.sshslaves.SSHLauncher\" plugin=\"ssh-slaves@1.5\"\u003e\n    \u003chost\u003e35.91.240.185\u003c/host\u003e\n    \u003cport\u003e22\u003c/port\u003e\n    \u003ccredentialsId\u003eJenkins-master-key\u003c/credentialsId\u003e\n    \u003csshHostKeyVerificationStrategy class=\"hudson.plugins.sshslaves.verifiers.ManuallyTrustedKeyVerificationStrategy\"\u003e\n          \u003crequireInitialManualTrust\u003efalse\u003c/requireInitialManualTrust\u003e\n        \u003c/sshHostKeyVerificationStrategy\u003e\n  \u003c/launcher\u003e\n  \u003clabel\u003eec2-instance\u003c/label\u003e\n  \u003cnodeProperties/\u003e\n  \u003cuserId\u003ejenkins\u003c/userId\u003e\n\u003c/slave\u003e\n",
+            "content_base64": null,
+            "directory_permission": "0777",
+            "file_permission": "0777",
+            "filename": "node.xml",
+            "id": "dbf8785dd9c12d3fe0eb664819b9dca34f91a770",
+            "sensitive_content": null,
+            "source": null
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_instance.ec2"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "change-permission",
+      "provider": "provider[\"registry.terraform.io/hashicorp/null\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "3750266962142847325",
+            "triggers": null
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_instance.ec2"
+          ]
+        }
+      ]
+    }
+  ]
+}
