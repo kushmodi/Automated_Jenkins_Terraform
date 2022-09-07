@@ -92,6 +92,7 @@ resource "null_resource" "slave-config" {
     EOT
   }
 }
+#this is just for demo purpose
 
 
 
